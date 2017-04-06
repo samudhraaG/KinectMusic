@@ -57,7 +57,8 @@
             </StackPanel>
         </GroupBox>
         <Label Content="Label" HorizontalAlignment="Left" Margin="-181,676,0,0" Grid.Row="1" VerticalAlignment="Top" Height="33" Width="95"/>
-        <TextBox x:Name="Octave" HorizontalAlignment="Left" Height="23" Margin="44,362,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Source=octaveVal, Path=Octave}" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="Octave" HorizontalAlignment="Left" Height="53" Margin="44,362,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Source=octave, Path=Octave}" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="note" HorizontalAlignment="Left" Height="53" Margin="44,362,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Source=noteVal, Path=note}" VerticalAlignment="Top" Width="120"/>
 
     </Grid>
 </Window>

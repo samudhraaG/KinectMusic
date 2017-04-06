@@ -16,11 +16,12 @@ namespace GesturalMusic
         // For rate limiting
         private DateTime lastNotePlayed;
         private static TimeSpan rateLimit = new TimeSpan(0, 0, 0, 0, 30);
+        private int pitch;
+        int userOctave;
 
         // For hand closed state (playing state)
         HandState handStateLast;
         int lastSemitone;
-        int userOctave;
 
         public Instrument(string name)
         {
@@ -31,13 +32,62 @@ namespace GesturalMusic
             handStateLast = HandState.Unknown;
             lastSemitone = -1;
         }
+        private void setPitch(int pitch)
+        {
+            this.pitch = pitch;
+        }
+        public int getPitch()
+        {
+            return this.pitch;
+        }
 
+        public String getLastSemiTone()
+        {
+            String note = "";
+            if(lastSemitone > 0)
+            {
+                if (lastSemitone == 0)
+                {
+                    note = "C";
+                }
+                else if (lastSemitone == 2 )
+                {
+                    note = "D";
+                }
+                else if (lastSemitone == 4 )
+                {
+                    note = "E";
+                }
+                else if (lastSemitone == 5 )
+                {
+                    note = "F";
+                }
+                else if (lastSemitone == 7 )
+                {
+                    note = "G";
+                }
+                else if (lastSemitone == 9 )
+                {
+                    note = "A";
+                }
+                else if (lastSemitone == 11 )
+                {
+                    note = "B";
+                }
+            }
+
+            return note;
+        }
+        
+        
         public void PlayNote(int pitch, int velocity = 127, int duration = 500, int midiChannel = 1)
         {
             if (lastNotePlayed + rateLimit <= DateTime.Now)
             {
                 Console.WriteLine("Playing: " + this.name + " " + pitch + " " + velocity + " " + duration + " " + midiChannel);
                 OscElement elem = new OscElement("/" + this.name, pitch, velocity, duration, midiChannel);
+                Console.WriteLine("element >>>>> " + elem.ToString());
+                this.setPitch(pitch);
                 MainWindow.osc.Send(elem);
 
                 lastNotePlayed = DateTime.Now;
@@ -109,8 +159,9 @@ namespace GesturalMusic
 
                 // Scale octave to 12 semitones per octave
                 int octave = (userOctave + baseOctave) * 12;
-                Console.WriteLine("Octave"+octave);
+                Console.WriteLine("Octave" + userOctave);
                 this.userOctave = userOctave;
+
 
                 //////////////////////////////////////////////////////////////
                 // Send
@@ -118,14 +169,16 @@ namespace GesturalMusic
                 if (body.HandRightState == handStateLast && semitone == lastSemitone)
                 {
                     // for now, only play notes if the previous state was not this one.
-                    return false;
+                    //return false;
+                    return true;
                 }
                 handStateLast = body.HandRightState;
                 lastSemitone = semitone;
-
                 Console.WriteLine("lastSemitone" + lastSemitone);
+                Console.WriteLine("semitone >>> " + semitone);
+                
                 int pitch = octave + semitone;
-
+                Console.WriteLine("pitch >>> " + pitch);
                 // Send a note
                 this.PlayNote(pitch);
 
@@ -139,6 +192,7 @@ namespace GesturalMusic
         {
             return this.userOctave;
         }
+
         private int getSemitone(double percentage, HandState handState)
         {
             List<Tuple<double, int>> semitoneRanges;

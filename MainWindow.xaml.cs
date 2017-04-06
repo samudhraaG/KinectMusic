@@ -20,7 +20,8 @@
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         string val1 = "void";
-
+        string octave = "0";
+        String noteVal = "";
         public readonly static String FONT_FAMILY = "Verdana";
 
         /// <summary>
@@ -526,11 +527,13 @@
             {
                 // do this because vs is being stupid
                 String[] names = new String[4];
+                
                 for (int i = 0; i < 4; i++)
                 {
                     names[i] = instruments[i].name;
                 }
                 floorWindow.Draw(PartitionManager.GetPartition(body.Joints[JointType.SpineMid].Position), names);
+                floorWindow.Draw(PartitionManager.GetPartition(body.Joints[JointType.SpineMid].Position), this.octave);
             }
         }
 
@@ -580,8 +583,15 @@
             }
             else
             {
-                Console.WriteLine(" >>>>>> " + instrument.getUserOctave().ToString());
-                Octave.Text = instrument.getUserOctave().ToString();
+                String lastSemiTone = instrument.getLastSemiTone();
+                this.octave = instrument.getUserOctave().ToString();
+                this.noteVal = lastSemiTone;
+                
+                Octave.Text = this.octave;
+                note.Text = this.noteVal;
+                
+                Console.WriteLine("note being played >>>> " + lastSemiTone);
+                Console.WriteLine(" octave >>>>>> " + instrument.getUserOctave().ToString());                
                 return instrument.CheckAndPlayNote(body);
             }
         }
