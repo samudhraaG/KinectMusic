@@ -533,7 +533,8 @@
                     names[i] = instruments[i].name;
                 }
                 floorWindow.Draw(PartitionManager.GetPartition(body.Joints[JointType.SpineMid].Position), names);
-                floorWindow.Draw(PartitionManager.GetPartition(body.Joints[JointType.SpineMid].Position), this.octave);
+                floorWindow.Draw(PartitionManager.GetPartition(body.Joints[JointType.SpineMid].Position), this.
+                );
             }
         }
 
@@ -585,9 +586,10 @@
             {
                 String lastSemiTone = instrument.getLastSemiTone();
                 this.octave = instrument.getUserOctave().ToString();
+                Octave.Text = instrument.getUserOctave().ToString();
                 this.noteVal = lastSemiTone;
                 
-                Octave.Text = this.octave;
+               // Octave.Text = this.octave;
                 note.Text = this.noteVal;
                 
                 Console.WriteLine("note being played >>>> " + lastSemiTone);
@@ -829,6 +831,7 @@
             if (PartitionManager.val3 == "void")
             {
                 displaySetConfirmation(drawingContext, instruments[PartitionManager.GetPartition(b.Joints[JointType.SpineMid].Position)].name);
+                displaySetConfirmation(drawingContext, noteVal);
             }
             else
             {
@@ -914,6 +917,11 @@
                                                               new Typeface(MainWindow.FONT_FAMILY),
                                                               30, System.Windows.Media.Brushes.Black),
                                                               new Point(sl.X + i0XOffset + textXOffset, sl.Y + i0YOffset + textYOffset));
+                drawingContext.DrawText(new FormattedText(noteVal,CultureInfo.GetCultureInfo("en-us"),
+                                                              FlowDirection.LeftToRight,
+                                                              new Typeface(MainWindow.FONT_FAMILY),
+                                                              30, System.Windows.Media.Brushes.Black),
+                                                              new Point(sl.X + i0XOffset + textXOffset, sl.Y + i0YOffset + textYOffset));                                              
 
                 // Hand at approx 45 degrees
                 if (angle2 > 40 && angle2 < 50 && body.HandLeftState == HandState.Closed)
