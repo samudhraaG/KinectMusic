@@ -533,8 +533,7 @@
                     names[i] = instruments[i].name;
                 }
                 floorWindow.Draw(PartitionManager.GetPartition(body.Joints[JointType.SpineMid].Position), names);
-                floorWindow.Draw(PartitionManager.GetPartition(body.Joints[JointType.SpineMid].Position), this.
-                );
+                floorWindow.Draw(PartitionManager.GetPartition(body.Joints[JointType.SpineMid].Position), this.octave);
             }
         }
 
